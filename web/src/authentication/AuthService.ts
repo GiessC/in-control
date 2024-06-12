@@ -59,8 +59,8 @@ export default class AuthService {
             throw new Error(
                 'Unexpected response received from authentication service.',
             );
-        } catch {
-            throw new Error('Failed to confirm sign up');
+        } catch (error: unknown) {
+            throw error;
         }
     }
 
@@ -82,7 +82,7 @@ export default class AuthService {
 
             return this.handleSignInNextSteps(response);
         } catch (error: unknown) {
-            throw new Error('Failed to sign in');
+            throw error;
         }
     }
 
@@ -90,7 +90,7 @@ export default class AuthService {
         try {
             await signOut();
         } catch (error: unknown) {
-            throw new Error('Failed to sign out');
+            throw error;
         }
     }
 
@@ -106,7 +106,7 @@ export default class AuthService {
             }
             return this.handleSignInNextSteps(response);
         } catch (error: unknown) {
-            throw new Error('Failed to confirm sign in with TOTP');
+            throw error;
         }
     }
 

@@ -10,4 +10,5 @@ cdk.out
 # Tests
 coverage/
 
-settings*.json
+settings.json
+settings.*.json

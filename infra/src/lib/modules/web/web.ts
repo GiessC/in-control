@@ -17,7 +17,7 @@ import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { Construct } from 'constructs';
 import path from 'path';
 import type DefaultModuleProps from '../../common/defaultModuleProps';
-import { type Settings } from '../../common/settings';
+import Settings from '../../common/settings';
 
 export interface WebModuleProps extends DefaultModuleProps {
     certificateArn: string;

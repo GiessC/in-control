@@ -3,7 +3,7 @@ import { type IDistribution } from 'aws-cdk-lib/aws-cloudfront';
 import { type UserPoolDomain } from 'aws-cdk-lib/aws-cognito';
 import { type Construct } from 'constructs';
 import type DefaultStackProps from '../common/defaultStackProps';
-import { type Settings } from '../common/settings';
+import Settings from '../common/settings';
 import { AuthModule } from '../modules/auth/auth';
 import DomainModule from '../modules/domain/domain';
 import WebModule from '../modules/web/web';

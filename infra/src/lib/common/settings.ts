@@ -2,7 +2,22 @@ import { RemovalPolicy } from 'aws-cdk-lib';
 import path from 'path';
 import { object, string, type Schema } from 'yup';
 
-export class Settings {
+const removeEmptyValues = <TReturnType>(object?: object): TReturnType => {
+    if (!object) return {} as TReturnType;
+    return Object.entries(object).reduce(
+        (acc: Record<string, string>, [key, value]) => {
+            if (typeof value === 'object') {
+                acc[key] = removeEmptyValues(value);
+            } else if (value !== '' && value != null) {
+                acc[key] = value;
+            }
+            return acc;
+        },
+        {},
+    ) as TReturnType;
+};
+
+export default class Settings {
     private static _instance?: Settings;
     readonly AwsSettings?: AwsSettings;
     readonly DomainSettings: DomainSettings;
@@ -18,9 +33,27 @@ export class Settings {
         this.RemovalPolicy = RemovalPolicy;
     }
 
-    public static fromJson(filename: string): Settings {
-        this._instance = loadSettings(filename);
-        return this._instance;
+    public static fromJsonFiles(filenames: string[]): Settings {
+        let settings: Partial<Settings> = {};
+
+        for (const filename of filenames) {
+            const newSettings = loadSettings(filename);
+            settings = {
+                AwsSettings: newSettings.AwsSettings,
+                DomainSettings: newSettings.DomainSettings,
+                RemovalPolicy: newSettings.RemovalPolicy,
+                ...removeEmptyValues(settings),
+            };
+        }
+
+        try {
+            validateSettings(settings);
+            this._instance = settings as Settings;
+            return this._instance;
+        } catch (error: unknown) {
+            console.error(error);
+            process.exit(1);
+        }
     }
 
     public static get instance(): Settings {
@@ -83,15 +116,11 @@ const validateSettings = (settings: object) => {
 const loadSettings = (settingsFile: string): Settings => {
     const settingsFileLocation = path.join(process.cwd(), settingsFile);
     try {
-        const settings = require(settingsFileLocation);
-        validateSettings(settings);
-        return settings;
+        return require(settingsFileLocation);
     } catch (error: unknown) {
         console.error(
-            `An error occured while loading settings file: ${settingsFileLocation}\n${error}\n\nExiting...`,
+            `An error occurred while loading settings file: ${settingsFileLocation}\n${error}\n\nExiting...`,
         );
         process.exit(1);
     }
 };
-
-export default loadSettings;
