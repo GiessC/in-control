@@ -8,7 +8,7 @@ import {
 import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
 import { Construct } from 'constructs';
 import Route53Resource from '../../common/resources/route53';
-import { Settings } from '../../common/settings';
+import Settings from '../../common/settings';
 
 interface DomainModuleProps {
     settings: Settings;

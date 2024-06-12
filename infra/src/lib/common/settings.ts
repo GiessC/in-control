@@ -3,7 +3,22 @@ import path from 'path';
 import { object, string, type Schema } from 'yup';
 import { SettingsFailedToLoadError } from '../errors/settingsFailedToLoadError';
 
-export class Settings {
+const removeEmptyValues = <TReturnType>(object?: object): TReturnType => {
+    if (!object) return {} as TReturnType;
+    return Object.entries(object).reduce(
+        (acc: Record<string, string>, [key, value]) => {
+            if (typeof value === 'object') {
+                acc[key] = removeEmptyValues(value);
+            } else if (value !== '' && value != null) {
+                acc[key] = value;
+            }
+            return acc;
+        },
+        {},
+    ) as TReturnType;
+};
+
+export default class Settings {
     private static _instance?: Settings;
     readonly AwsSettings?: AwsSettings;
     readonly DomainSettings: DomainSettings;
@@ -109,9 +124,7 @@ const loadSettingsFromEnvVars = (): Settings => {
 const loadSettingsFromJson = (settingsFile: string): Settings => {
     const settingsFileLocation = path.join(process.cwd(), settingsFile);
     try {
-        const settings = require(settingsFileLocation);
-        validateSettings(settings);
-        return settings;
+        return require(settingsFileLocation);
     } catch (error: unknown) {
         throw new SettingsFailedToLoadError(settingsFileLocation, error);
     }

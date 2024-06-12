@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { RemovalPolicy } from 'aws-cdk-lib';
-import { Settings } from '../../src/lib/common/settings';
+import Settings from '../../src/lib/common/settings';
 
 const createRandomSettings = (removalPolicy?: RemovalPolicy): Settings => ({
     AwsSettings: {

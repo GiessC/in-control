@@ -1,10 +1,11 @@
 import LoginForm from '@/components/auth/login/LoginForm';
+import { Flex } from '@mantine/core';
 
 const Login = () => {
     return (
-        <div>
+        <Flex className='w-full h-full'>
             <LoginForm />
-        </div>
+        </Flex>
     );
 };
 

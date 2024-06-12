@@ -13,5 +13,6 @@ cdk.context.json
 # Tests
 coverage/
 
-settings*.json
+settings.json
+settings.*.json
 dist/
