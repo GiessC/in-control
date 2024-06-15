@@ -136,6 +136,7 @@ jobs:
         audience: sts.amazonaws.com
         aws-region: ${{ vars.DEPLOY_REGION }}
         role-to-assume: ${{ vars.DEPLOY_ROLE }}
+    - run: npm install -g aws-cdk@2.124.0
     - name: Deploy
       run: |
         cdk deploy -c environment=development --require-approval never
