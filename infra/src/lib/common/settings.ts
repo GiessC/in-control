@@ -42,9 +42,9 @@ export class Settings {
 }
 
 export interface AwsSettings {
-    readonly Account: string;
-    readonly Profile: string;
-    readonly Region: string;
+    readonly Account?: string;
+    readonly Profile?: string;
+    readonly Region?: string;
 }
 
 export interface DomainSettings {
@@ -91,6 +91,11 @@ const validateSettings = (settings: object) => {
 };
 
 const loadSettingsFromEnvVars = (): Settings => {
+    const AwsSettings: AwsSettings = {
+        Account: process.env.AWS_ACCOUNT,
+        Profile: process.env.AWS_PROFILE,
+        Region: process.env.DEPLOY_REGION,
+    };
     const DomainSettings: DomainSettings = {
         CertificateArn: process.env.CERTIFICATE_ARN ?? '',
         HostedZoneId: process.env.HOSTED_ZONE_ID ?? '',
@@ -98,7 +103,7 @@ const loadSettingsFromEnvVars = (): Settings => {
     };
     const RemovalPolicy: RemovalPolicy | undefined = process.env
         .REMOVAL_POLICY as RemovalPolicy;
-    return new Settings(undefined, DomainSettings, RemovalPolicy);
+    return new Settings(AwsSettings, DomainSettings, RemovalPolicy);
 };
 
 const loadSettingsFromJson = (settingsFile: string): Settings => {
