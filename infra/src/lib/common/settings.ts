@@ -91,7 +91,6 @@ const validateSettings = (settings: object) => {
 };
 
 const loadSettingsFromEnvVars = (): Settings => {
-    console.log(process.env);
     const AwsSettings: AwsSettings = {
         Account: process.env.AWS_ACCOUNT,
         Profile: process.env.AWS_PROFILE,
