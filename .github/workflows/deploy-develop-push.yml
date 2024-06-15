@@ -78,6 +78,7 @@ jobs:
         verbose: true
   infra-build:
     name: Infrastructure Build and Test
+    environment: Development
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -104,7 +105,14 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
         verbose: true
     - run: npm install -g aws-cdk@2.124.0
-    - run: cdk synth
+    - name: Setup Environment Variables
+      run: |
+        export AWS_ACCOUNT=${{ vars.AWS_ACCOUNT }}
+        export DEPLOY_REGION=${{ vars.DEPLOY_REGION }}
+        export DOMAIN_NAME=${{ vars.DOMAIN_NAME }}
+        export HOSTED_ZONE_ID=${{ vars.HOSTED_ZONE_ID }}
+        export CERTIFICATE_ARN=${{ vars.CERTIFICATE_ARN }}
+    - run: cdk synth -c environment=development
       working-directory: ${{ github.workspace }}/infra/
   dev-deploy:
     name: Dev Deploy
@@ -127,7 +135,7 @@ jobs:
         audience: sts.amazonaws.com
         aws-region: ${{ vars.DEPLOY_REGION }}
         role-to-assume: ${{ vars.DEPLOY_ROLE }}
-    - name: Setup Environment Variables
+    - name: Setup Environment Variables # There has to be a way to extract this out - multiple jobs use it
       run: |
         export AWS_ACCOUNT=${{ vars.AWS_ACCOUNT }}
         export DEPLOY_REGION=${{ vars.DEPLOY_REGION }}
