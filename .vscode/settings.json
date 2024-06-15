@@ -12,9 +12,12 @@
   },
   "prettier.configPath": ".prettierrc",
   "cSpell.words": [
+    "backable",
     "carryforward",
     "codecov",
     "inctrl",
+    "signup",
     "Xunit"
-  ]
+  ],
+  "codeQL.githubDatabase.download": "never"
 }

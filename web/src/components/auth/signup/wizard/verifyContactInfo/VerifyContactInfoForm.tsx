@@ -1,24 +1,13 @@
-'use client';
-
-import { login } from '@/app/auth/login/actions';
 import { Center, Paper, Text } from '@mantine/core';
-import { Formik, FormikHelpers } from 'formik';
-import LoginFormView from './LoginFormView';
-import LoginFormValues, { defaultLoginValues } from './formValues';
+import { Formik } from 'formik';
+import VerifyContactInfoFormView from './VerifyContactInfoFormView';
+import VerifyContactInfoFormValues, {
+    defaultVerifyContactInfoValues,
+} from './formValues';
 
-const onSubmit = async (
-    values: LoginFormValues,
-    { resetForm }: FormikHelpers<LoginFormValues>,
-) => {
-    try {
-        await login(values.userAlias, values.password);
-        resetForm({ values: defaultLoginValues });
-    } catch (error: unknown) {
-        console.error(error);
-    }
-};
+const onSubmit = async (values: VerifyContactInfoFormValues) => {};
 
-const LoginForm = () => {
+const VerifyContactInfoForm = () => {
     return (
         <Paper
             className='w-1/2 m-auto'
@@ -30,15 +19,15 @@ const LoginForm = () => {
                     size='xl'
                     className='font-extrabold'
                 >
-                    Login
+                    Verify Email/Phone Number
                 </Text>
             </Center>
             <Formik
-                initialValues={defaultLoginValues}
+                initialValues={defaultVerifyContactInfoValues}
                 onSubmit={onSubmit}
             >
                 {({ values, handleChange, handleBlur, handleSubmit }) => (
-                    <LoginFormView
+                    <VerifyContactInfoFormView
                         values={values}
                         onSubmit={handleSubmit}
                         onChange={handleChange}
@@ -50,4 +39,4 @@ const LoginForm = () => {
     );
 };
 
-export default LoginForm;
+export default VerifyContactInfoForm;
