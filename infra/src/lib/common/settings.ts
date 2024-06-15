@@ -1,6 +1,7 @@
 import { RemovalPolicy } from 'aws-cdk-lib';
 import path from 'path';
 import { object, string, type Schema } from 'yup';
+import { SettingsFailedToLoadError } from '../errors/settingsFailedToLoadError';
 
 export class Settings {
     private static _instance?: Settings;
@@ -8,7 +9,7 @@ export class Settings {
     readonly DomainSettings: DomainSettings;
     readonly RemovalPolicy?: RemovalPolicy;
 
-    private constructor(
+    public constructor(
         AwsSettings: AwsSettings | undefined,
         DomainSettings: DomainSettings,
         RemovalPolicy: RemovalPolicy | undefined,
@@ -18,14 +19,23 @@ export class Settings {
         this.RemovalPolicy = RemovalPolicy;
     }
 
-    public static fromJson(filename: string): Settings {
-        this._instance = loadSettings(filename);
+    public static fromJsonOrEnvVars(filename: string): Settings {
+        try {
+            this._instance = loadSettingsFromJson(filename);
+        } catch (error: unknown) {
+            if (error instanceof SettingsFailedToLoadError) {
+                this._instance = loadSettingsFromEnvVars();
+            }
+        }
+        if (!this._instance) {
+            throw new Error('Settings failed to load');
+        }
         return this._instance;
     }
 
     public static get instance(): Settings {
         if (!this._instance) {
-            throw new Error('Settings not loaded');
+            throw new Error('Settings failed to load');
         }
         return this._instance;
     }
@@ -80,18 +90,24 @@ const validateSettings = (settings: object) => {
     }
 };
 
-const loadSettings = (settingsFile: string): Settings => {
+const loadSettingsFromEnvVars = (): Settings => {
+    const DomainSettings: DomainSettings = {
+        CertificateArn: process.env.CERTIFICATE_ARN ?? '',
+        HostedZoneId: process.env.HOSTED_ZONE_ID ?? '',
+        DomainName: process.env.DOMAIN_NAME ?? '',
+    };
+    const RemovalPolicy: RemovalPolicy | undefined = process.env
+        .REMOVAL_POLICY as RemovalPolicy;
+    return new Settings(undefined, DomainSettings, RemovalPolicy);
+};
+
+const loadSettingsFromJson = (settingsFile: string): Settings => {
     const settingsFileLocation = path.join(process.cwd(), settingsFile);
     try {
         const settings = require(settingsFileLocation);
         validateSettings(settings);
         return settings;
     } catch (error: unknown) {
-        console.error(
-            `An error occured while loading settings file: ${settingsFileLocation}\n${error}\n\nExiting...`,
-        );
-        process.exit(1);
+        throw new SettingsFailedToLoadError(settingsFileLocation, error);
     }
 };
-
-export default loadSettings;
