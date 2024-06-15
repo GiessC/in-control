@@ -1,6 +1,6 @@
 import { type StackProps } from 'aws-cdk-lib';
 import { type Construct } from 'constructs';
-import loadSettings, { type Settings } from '../../../common/settings';
+import { Settings } from '../../../common/settings';
 import EnvironmentStack from '../environmentStack';
 
 export interface LocalStackProps extends StackProps {
@@ -13,7 +13,7 @@ export default class LocalStack extends EnvironmentStack {
 
     constructor(scope: Construct, id: string, props?: LocalStackProps) {
         super(scope, id, props);
-        this._settings = loadSettings(LocalStack.SETTINGS_FILE);
+        this._settings = Settings.fromJsonOrEnvVars(LocalStack.SETTINGS_FILE);
         const env = this.getEnv(this._settings);
         this.createStacks(env);
     }
