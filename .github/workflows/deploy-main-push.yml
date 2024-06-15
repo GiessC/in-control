@@ -105,14 +105,13 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
         verbose: true
     - run: npm install -g aws-cdk@2.124.0
-    - name: Setup Environment Variables
-      run: |
-        export AWS_ACCOUNT=${{ vars.AWS_ACCOUNT }}
-        export DEPLOY_REGION=${{ vars.DEPLOY_REGION }}
-        export DOMAIN_NAME=${{ vars.DOMAIN_NAME }}
-        export HOSTED_ZONE_ID=${{ vars.HOSTED_ZONE_ID }}
-        export CERTIFICATE_ARN=${{ vars.CERTIFICATE_ARN }}
     - run: cdk synth -c environment=production
+      env:
+        AWS_ACCOUNT: ${{ vars.AWS_ACCOUNT }}
+        DEPLOY_REGION: ${{ vars.DEPLOY_REGION }}
+        DOMAIN_NAME: ${{ vars.DOMAIN_NAME }}
+        HOSTED_ZONE_ID: ${{ vars.HOSTED_ZONE_ID }}
+        CERTIFICATE_ARN: ${{ vars.CERTIFICATE_ARN }}
       working-directory: ${{ github.workspace }}/infra/
   dev-deploy:
     name: Dev Deploy
@@ -135,16 +134,15 @@ jobs:
         audience: sts.amazonaws.com
         aws-region: ${{ vars.DEPLOY_REGION }}
         role-to-assume: ${{ vars.DEPLOY_ROLE }}
-    - name: Setup Environment Variables
-      run: |
-        export AWS_ACCOUNT=${{ vars.AWS_ACCOUNT }}
-        export DEPLOY_REGION=${{ vars.DEPLOY_REGION }}
-        export DOMAIN_NAME=${{ vars.DOMAIN_NAME }}
-        export HOSTED_ZONE_ID=${{ vars.HOSTED_ZONE_ID }}
-        export CERTIFICATE_ARN=${{ vars.CERTIFICATE_ARN }}
     - name: Deploy
       run: |
         cdk deploy -c environment=development --require-approval never
+      env:
+        AWS_ACCOUNT: ${{ vars.AWS_ACCOUNT }}
+        DEPLOY_REGION: ${{ vars.DEPLOY_REGION }}
+        DOMAIN_NAME: ${{ vars.DOMAIN_NAME }}
+        HOSTED_ZONE_ID: ${{ vars.HOSTED_ZONE_ID }}
+        CERTIFICATE_ARN: ${{ vars.CERTIFICATE_ARN }}
       working-directory: ${{ github.workspace }}/infra/
   prod-deploy:
     name: Prod Deploy
@@ -167,14 +165,13 @@ jobs:
         audience: sts.amazonaws.com
         aws-region: ${{ vars.DEPLOY_REGION }}
         role-to-assume: ${{ vars.DEPLOY_ROLE }}
-    - name: Setup Environment Variables
-      run: |
-        export AWS_ACCOUNT=${{ vars.AWS_ACCOUNT }}
-        export DEPLOY_REGION=${{ vars.DEPLOY_REGION }}
-        export DOMAIN_NAME=${{ vars.DOMAIN_NAME }}
-        export HOSTED_ZONE_ID=${{ vars.HOSTED_ZONE_ID }}
-        export CERTIFICATE_ARN=${{ vars.CERTIFICATE_ARN }}
     - name: Deploy
       run: |
         cdk deploy -c environment=production --require-approval never
+      env:
+        AWS_ACCOUNT: ${{ vars.AWS_ACCOUNT }}
+        DEPLOY_REGION: ${{ vars.DEPLOY_REGION }}
+        DOMAIN_NAME: ${{ vars.DOMAIN_NAME }}
+        HOSTED_ZONE_ID: ${{ vars.HOSTED_ZONE_ID }}
+        CERTIFICATE_ARN: ${{ vars.CERTIFICATE_ARN }}
       working-directory: ${{ github.workspace }}/infra/
