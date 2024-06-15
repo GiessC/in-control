@@ -13,7 +13,6 @@
     "@aws-amplify/adapter-nextjs": "^1.2.4",
     "@mantine/charts": "^7.10.1",
     "@mantine/code-highlight": "^7.10.1",
-    "@mantine/core": "^7.10.1",
     "@mantine/dates": "^7.10.1",
     "@mantine/hooks": "^7.10.1",
     "@mantine/notifications": "^7.10.1",

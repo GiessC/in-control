@@ -1,20 +1,13 @@
-import { Button, TextInput } from '@mantine/core';
-import { ChangeEvent, FocusEvent } from 'react';
-import { LoginFormValues } from './LoginForm';
-
-export interface LoginFormViewProps {
-    values: LoginFormValues;
-    onSubmit: () => void;
-    onChange: (e: ChangeEvent<unknown>) => void;
-    onBlur: (e: FocusEvent<unknown, Element>) => void;
-}
+import FormViewProps from '@/components/common/FormViewProps';
+import { Button, PasswordInput, TextInput } from '@mantine/core';
+import LoginFormValues from './formValues';
 
 const LoginFormView = ({
     values,
     onSubmit,
     onChange,
     onBlur,
-}: LoginFormViewProps) => {
+}: FormViewProps<LoginFormValues>) => {
     return (
         <form onSubmit={onSubmit}>
             <TextInput
@@ -25,12 +18,11 @@ const LoginFormView = ({
                 onChange={onChange}
                 onBlur={onBlur}
             />
-            <TextInput
+            <PasswordInput
                 name='password'
-                type='password'
                 label='Password'
                 autoComplete='current-password'
-                value={values.userAlias}
+                value={values.password}
                 onChange={onChange}
                 onBlur={onBlur}
             />
