@@ -1,8 +1,0 @@
-{
-    "DomainSettings": {
-        "CertificateArn": "arn:aws:acm:us-east-1:637423522873:certificate/84e898b2-ff62-44da-9874-fd2255fdd13d",
-        "HostedZoneId": "Z08357871AZYY593YRIW6",
-        "DomainName": "inctrl.tech"
-    },
-    "RemovalPolicy": "retain"
-}
