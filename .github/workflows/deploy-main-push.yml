@@ -137,7 +137,7 @@ jobs:
     - run: npm install -g aws-cdk@2.124.0
     - name: Deploy
       run: |
-        cdk deploy -c environment=development --all --require-approval never
+        cdk deploy --verbose -c environment=development --all --require-approval never
       env:
         AWS_ACCOUNT: ${{ vars.AWS_ACCOUNT }}
         DEPLOY_REGION: ${{ vars.DEPLOY_REGION }}
@@ -169,7 +169,7 @@ jobs:
     - run: npm install -g aws-cdk@2.124.0
     - name: Deploy
       run: |
-        cdk deploy -c environment=production --all --require-approval never
+        cdk deploy --verbose -c environment=production --all --require-approval never
       env:
         AWS_ACCOUNT: ${{ vars.AWS_ACCOUNT }}
         DEPLOY_REGION: ${{ vars.DEPLOY_REGION }}

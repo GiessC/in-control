@@ -6,10 +6,7 @@ import {
     RecordTarget,
     type IHostedZone,
 } from 'aws-cdk-lib/aws-route53';
-import {
-    CloudFrontTarget,
-    UserPoolDomainTarget,
-} from 'aws-cdk-lib/aws-route53-targets';
+import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
 import { Construct } from 'constructs';
 import Route53Resource from '../../common/resources/route53';
 import { Settings } from '../../common/settings';
@@ -17,7 +14,7 @@ import { Settings } from '../../common/settings';
 interface DomainModuleProps {
     settings: Settings;
     distribution: IDistribution;
-    userPoolDomain: UserPoolDomain;
+    userPoolDomain?: UserPoolDomain;
 }
 
 export default class DomainModule extends Construct {
@@ -39,7 +36,7 @@ export default class DomainModule extends Construct {
             },
         );
         this.createWebARecord(`${id}-Web`, hostedZone, distribution);
-        this.createAuthRoute53Records(`${id}-Auth`, hostedZone, userPoolDomain);
+        // this.createAuthRoute53Records(`${id}-Auth`, hostedZone, userPoolDomain);
     }
 
     private createWebARecord(
@@ -53,17 +50,17 @@ export default class DomainModule extends Construct {
         });
     }
 
-    private createAuthRoute53Records(
-        id: string,
-        hostedZone: IHostedZone,
-        userPoolDomain: UserPoolDomain,
-    ): void {
-        Route53Resource.createARecord(this, `${id}-A`, {
-            target: RecordTarget.fromAlias(
-                new UserPoolDomainTarget(userPoolDomain),
-            ),
-            zone: hostedZone,
-            recordName: 'auth',
-        });
-    }
+    // private createAuthRoute53Records(
+    //     id: string,
+    //     hostedZone: IHostedZone,
+    //     userPoolDomain: UserPoolDomain,
+    // ): void {
+    //     Route53Resource.createARecord(this, `${id}-A`, {
+    //         target: RecordTarget.fromAlias(
+    //             new UserPoolDomainTarget(userPoolDomain),
+    //         ),
+    //         zone: hostedZone,
+    //         recordName: 'auth',
+    //     });
+    // }
 }

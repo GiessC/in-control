@@ -15,5 +15,6 @@
     "carryforward",
     "codecov",
     "Xunit"
-  ]
+  ],
+  "codeQL.githubDatabase.download": "never"
 }
