@@ -1,5 +1,4 @@
 import { type IDistribution } from 'aws-cdk-lib/aws-cloudfront';
-import { UserPoolDomain } from 'aws-cdk-lib/aws-cognito';
 import {
     ARecord,
     HostedZone,
@@ -14,7 +13,6 @@ import { Settings } from '../../common/settings';
 interface DomainModuleProps {
     settings: Settings;
     distribution: IDistribution;
-    userPoolDomain?: UserPoolDomain;
 }
 
 export default class DomainModule extends Construct {
@@ -23,7 +21,7 @@ export default class DomainModule extends Construct {
     constructor(
         scope: Construct,
         id: string,
-        { settings, distribution, userPoolDomain }: DomainModuleProps,
+        { settings, distribution }: DomainModuleProps,
     ) {
         super(scope, id);
         this._settings = settings;
