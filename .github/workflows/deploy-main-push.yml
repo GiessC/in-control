@@ -1,7 +1,7 @@
-name: Build, Test, and Deploy Prod
+name: Build, Test, and Deploy Dev
 on:
   push:
-    branches: [ main ]
+    branches: [ develop ]
 
 permissions:
   id-token: write
@@ -10,6 +10,7 @@ permissions:
 jobs:
   api-build:
     name: API Build and Test
+    environment: Production
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -46,6 +47,7 @@ jobs:
         flags: api-unit
   web-build:
     name: Web Build and Test
+    environment: Production
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -111,38 +113,6 @@ jobs:
         aws-region: ${{ vars.DEPLOY_REGION }}
         role-to-assume: ${{ vars.DEPLOY_ROLE }}
     - run: cdk synth -c environment=production
-      env:
-        AWS_ACCOUNT: ${{ vars.AWS_ACCOUNT }}
-        DEPLOY_REGION: ${{ vars.DEPLOY_REGION }}
-        DOMAIN_NAME: ${{ vars.DOMAIN_NAME }}
-        HOSTED_ZONE_ID: ${{ vars.HOSTED_ZONE_ID }}
-        CERTIFICATE_ARN: ${{ vars.CERTIFICATE_ARN }}
-      working-directory: ${{ github.workspace }}/infra/
-  dev-deploy:
-    name: Dev Deploy
-    environment: Development
-    runs-on: ubuntu-latest
-    needs:
-    - infra-build
-    - api-build
-    - web-build
-    steps:
-    - uses: actions/checkout@v4
-    - name: Setup NodeJS
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20.x'
-    - run: npm ci
-      working-directory: ${{ github.workspace }}/infra/
-    - uses: aws-actions/configure-aws-credentials@v4
-      with:
-        audience: sts.amazonaws.com
-        aws-region: ${{ vars.DEPLOY_REGION }}
-        role-to-assume: ${{ vars.DEPLOY_ROLE }}
-    - run: npm install -g aws-cdk@2.124.0
-    - name: Deploy
-      run: |
-        cdk deploy --verbose -c environment=development --all --require-approval never
       env:
         AWS_ACCOUNT: ${{ vars.AWS_ACCOUNT }}
         DEPLOY_REGION: ${{ vars.DEPLOY_REGION }}
