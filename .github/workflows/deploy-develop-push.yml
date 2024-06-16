@@ -10,6 +10,7 @@ permissions:
 jobs:
   api-build:
     name: API Build and Test
+    environment: Development
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -46,6 +47,7 @@ jobs:
         flags: api-unit
   web-build:
     name: Web Build and Test
+    environment: Development
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -105,6 +107,11 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
         verbose: true
     - run: npm install -g aws-cdk@2.124.0
+    - uses: aws-actions/configure-aws-credentials@v4
+      with:
+        audience: sts.amazonaws.com
+        aws-region: ${{ vars.DEPLOY_REGION }}
+        role-to-assume: ${{ vars.DEPLOY_ROLE }}
     - run: cdk synth -c environment=development
       env:
         AWS_ACCOUNT: ${{ vars.AWS_ACCOUNT }}
@@ -137,7 +144,7 @@ jobs:
     - run: npm install -g aws-cdk@2.124.0
     - name: Deploy
       run: |
-        cdk deploy -c environment=development --all --require-approval never
+        cdk deploy --verbose -c environment=development --all --require-approval never
       env:
         AWS_ACCOUNT: ${{ vars.AWS_ACCOUNT }}
         DEPLOY_REGION: ${{ vars.DEPLOY_REGION }}

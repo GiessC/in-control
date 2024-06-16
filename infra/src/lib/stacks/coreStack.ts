@@ -1,6 +1,5 @@
 import { Stack } from 'aws-cdk-lib';
 import { type IDistribution } from 'aws-cdk-lib/aws-cloudfront';
-import { type UserPoolDomain } from 'aws-cdk-lib/aws-cognito';
 import { type Construct } from 'constructs';
 import type DefaultStackProps from '../common/defaultStackProps';
 import { type Settings } from '../common/settings';
@@ -20,14 +19,9 @@ export default class CoreStack extends Stack {
         { settings, ...props }: DefaultStackProps,
     ) {
         super(scope, id, props);
-        const authModule = this.addAuthModule(id, settings);
+        this.addAuthModule(id, settings);
         const webModule = this.addWebModule(id, settings);
-        this.addDomainModule(
-            id,
-            webModule.distribution,
-            authModule.domain,
-            settings,
-        );
+        this.addDomainModule(id, webModule.distribution, settings);
     }
 
     private addAuthModule(id: string, settings: Settings): AuthModule {
@@ -46,12 +40,10 @@ export default class CoreStack extends Stack {
     private addDomainModule(
         id: string,
         distribution: IDistribution,
-        userPoolDomain: UserPoolDomain,
         settings: Settings,
     ): DomainModule {
         return new DomainModule(this, `${id}-Domain`, {
             distribution,
-            userPoolDomain,
             settings,
         });
     }
