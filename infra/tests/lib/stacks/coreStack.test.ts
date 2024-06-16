@@ -79,11 +79,5 @@ describe('CoreStack', () => {
                 RefreshToken: 'minutes',
             },
         });
-        // template.hasResourceProperties('AWS::Cognito::UserPoolDomain', {
-        //     CustomDomainConfig: {
-        //         CertificateArn: settings.DomainSettings.CertificateArn,
-        //     },
-        //     Domain: `auth.${settings.DomainSettings.DomainName}`,
-        // });
     });
 });

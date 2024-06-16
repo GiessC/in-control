@@ -36,7 +36,6 @@ export default class DomainModule extends Construct {
             },
         );
         this.createWebARecord(`${id}-Web`, hostedZone, distribution);
-        // this.createAuthRoute53Records(`${id}-Auth`, hostedZone, userPoolDomain);
     }
 
     private createWebARecord(
@@ -49,18 +48,4 @@ export default class DomainModule extends Construct {
             zone: hostedZone,
         });
     }
-
-    // private createAuthRoute53Records(
-    //     id: string,
-    //     hostedZone: IHostedZone,
-    //     userPoolDomain: UserPoolDomain,
-    // ): void {
-    //     Route53Resource.createARecord(this, `${id}-A`, {
-    //         target: RecordTarget.fromAlias(
-    //             new UserPoolDomainTarget(userPoolDomain),
-    //         ),
-    //         zone: hostedZone,
-    //         recordName: 'auth',
-    //     });
-    // }
 }

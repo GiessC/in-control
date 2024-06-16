@@ -5,7 +5,6 @@ import {
     UserPool,
     UserPoolClient,
     UserPoolClientIdentityProvider,
-    UserPoolDomain,
     VerificationEmailStyle,
 } from 'aws-cdk-lib/aws-cognito';
 import { Construct } from 'constructs';
@@ -16,17 +15,12 @@ export class AuthModule extends Construct {
     private readonly _settings: Settings;
     public readonly userPool: UserPool;
     public readonly client: UserPoolClient;
-    public readonly domain: UserPoolDomain;
 
     constructor(scope: Construct, id: string, props: DefaultModuleProps) {
         super(scope, id);
         this._settings = props?.settings;
         this.userPool = this.createUserPool(id, this._settings.RemovalPolicy);
         this.client = this.createUserPoolClient(id);
-        // this.domain = this.createUserPoolDomain(
-        //     id,
-        //     this._settings.DomainSettings.CertificateArn,
-        // );
     }
 
     private createUserPool(
@@ -98,18 +92,4 @@ export class AuthModule extends Construct {
             },
         });
     }
-
-    //     private createUserPoolDomain(id: string, certificateArn: string) {
-    //         return new UserPoolDomain(this, `${id}-Domain`, {
-    //             userPool: this.userPool,
-    //             customDomain: {
-    //                 domainName: `auth.${this._settings.DomainSettings.DomainName}`,
-    //                 certificate: Certificate.fromCertificateArn(
-    //                     this,
-    //                     `${id}-Cert`,
-    //                     certificateArn,
-    //                 ),
-    //             },
-    //         });
-    //     }
 }
