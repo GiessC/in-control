@@ -11,3 +11,4 @@ cdk.out
 coverage/
 
 settings*.json
+dist/
