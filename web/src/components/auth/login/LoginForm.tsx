@@ -1,10 +1,26 @@
 'use client';
 
-import { login } from '@/app/auth/login/actions';
+import { goTo } from '@/app/actions';
+import AuthService from '@/authentication/AuthService';
+import { handleAuthStep } from '@/authentication/helpers/handleAuthStep';
+import { Routes } from '@/models/routes/Routes';
 import { Center, Paper, Text } from '@mantine/core';
 import { Formik, FormikHelpers } from 'formik';
 import LoginFormView from './LoginFormView';
 import LoginFormValues, { defaultLoginValues } from './formValues';
+
+export const login = async (userAlias: string, password: string) => {
+    const authService = new AuthService();
+    const nextStepDetails = await authService.login({
+        userAlias,
+        password,
+    });
+    if (!nextStepDetails) {
+        goTo(Routes.Home);
+        return;
+    }
+    handleAuthStep(nextStepDetails);
+};
 
 const onSubmit = async (
     values: LoginFormValues,

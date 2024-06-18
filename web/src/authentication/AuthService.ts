@@ -64,7 +64,7 @@ export default class AuthService {
         }
     }
 
-    public async signIn({
+    public async login({
         userAlias,
         password,
     }: SignInRequest): Promise<AuthStepDetails | null> {
