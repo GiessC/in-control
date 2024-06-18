@@ -117,21 +117,6 @@ jobs:
     - run: npm run test -- --error-on-deprecated --ci --config ${{ github.workspace }}/infra/jest.config.ts --maxWorkers=1
       working-directory: ${{ github.workspace }}/infra/
     - run: npm install -g aws-cdk@2.124.0
-    - uses: aws-actions/configure-aws-credentials@v4
-      with:
-        audience: sts.amazonaws.com
-        aws-region: us-east-1
-        inline-session-policy: |
-          {
-            "Version": "2012-10-17",
-            "Statement": [
-              {
-                "Effect": "Allow",
-                "Action": "sts:GetCallerIdentity",
-                "Resource": "*"
-              }
-            ]
-          }
     - run: cdk synth -c environment=development
       env: # Hardcoded just for synthing
         AWS_ACCOUNT: 012345678901
