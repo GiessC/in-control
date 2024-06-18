@@ -110,7 +110,7 @@ jobs:
     - uses: aws-actions/configure-aws-credentials@v4
       with:
         audience: sts.amazonaws.com
-        aws-region: ${{ vars.DEPLOY_REGION }}
+        aws-region: us-east-1
         role-to-assume: ${{ vars.DEPLOY_ROLE }}
     - run: cdk synth -c environment=production
       env:
@@ -139,7 +139,7 @@ jobs:
     - uses: aws-actions/configure-aws-credentials@v4
       with:
         audience: sts.amazonaws.com
-        aws-region: ${{ vars.DEPLOY_REGION }}
+        aws-region: us-east-1
         role-to-assume: ${{ vars.DEPLOY_ROLE }}
     - run: npm install -g aws-cdk@2.124.0
     - name: Deploy
