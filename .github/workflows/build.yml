@@ -6,7 +6,6 @@ on:
 jobs:
   detect-changes:
     name: Detect File Changes
-    environment: Development
     runs-on: ubuntu-latest
     permissions:
       pull-requests: read
@@ -29,7 +28,6 @@ jobs:
               - 'web/**'
   api-build:
     needs: detect-changes
-    environment: Development
     if: needs.detect-changes.outputs.api == 'true'
     name: API Build and Test
     runs-on: ubuntu-latest
@@ -67,7 +65,6 @@ jobs:
         flags: api-unit
   web-build:
     needs: detect-changes
-    environment: Development
     if: needs.detect-changes.outputs.web == 'true'
     name: Web Build and Test
     runs-on: ubuntu-latest
@@ -101,7 +98,6 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
         verbose: true
   infra-build:
-    environment: Development
     needs: detect-changes
     if: needs.detect-changes.outputs.infra == 'true'
     name: Infrastructure Build and Test
