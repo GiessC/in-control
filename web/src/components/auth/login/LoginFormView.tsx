@@ -14,6 +14,7 @@ const LoginFormView = ({
                 name='userAlias'
                 label='Username / Email / Phone Number'
                 placeholder='Enter your username, email, or phone number'
+                autoComplete='username'
                 value={values.userAlias}
                 onChange={onChange}
                 onBlur={onBlur}

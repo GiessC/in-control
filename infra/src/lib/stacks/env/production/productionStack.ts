@@ -4,11 +4,7 @@ import Settings from '../../../common/settings';
 import EnvironmentStack from '../environmentStack';
 
 export default class ProductionStack extends EnvironmentStack {
-    private static readonly SETTINGS_FILES = [
-        'settings.json',
-        'settings.development.json',
-        'settings.local.json',
-    ];
+    private static readonly SETTINGS_FILE = 'settings.json';
     private readonly _settings: Settings;
 
     constructor(scope: Construct, id: string, props?: StackProps) {

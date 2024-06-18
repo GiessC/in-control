@@ -12,7 +12,7 @@ export default abstract class EnvironmentStack extends Stack {
     }
 
     private createCoreStack(id: string, awsEnv?: Environment): void {
-        new CoreStack(this, `${id}-Core`, {
+        new CoreStack(this, `${id}Core`, {
             env: awsEnv,
             settings: this.settings,
         });

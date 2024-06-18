@@ -1,6 +1,6 @@
 import { RemovalPolicy } from 'aws-cdk-lib';
 import path from 'path';
-import { object, string, type Schema } from 'yup';
+import { object, string } from 'yup';
 import { SettingsFailedToLoadError } from '../errors/settingsFailedToLoadError';
 
 const removeEmptyValues = <TReturnType>(object?: object): TReturnType => {
@@ -20,9 +20,9 @@ const removeEmptyValues = <TReturnType>(object?: object): TReturnType => {
 
 export default class Settings {
     private static _instance?: Settings;
-    readonly AwsSettings?: AwsSettings;
-    readonly DomainSettings: DomainSettings;
-    readonly RemovalPolicy?: RemovalPolicy;
+    public readonly AwsSettings?: AwsSettings;
+    public readonly DomainSettings: DomainSettings;
+    public readonly RemovalPolicy?: RemovalPolicy;
 
     public constructor(
         AwsSettings: AwsSettings | undefined,
@@ -45,6 +45,7 @@ export default class Settings {
         if (!this._instance) {
             throw new Error('Settings failed to load');
         }
+        validateSettings(this._instance);
         return this._instance;
     }
 
@@ -68,7 +69,7 @@ export interface DomainSettings {
     readonly DomainName: string;
 }
 
-const SCHEMA: Schema = object<Settings>().shape({
+const SCHEMA = object<Settings>().shape({
     AwsSettings: object<AwsSettings>()
         .shape({
             Profile: string().defined().nonNullable().required(),

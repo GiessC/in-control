@@ -8,11 +8,7 @@ export interface LocalStackProps extends StackProps {
 }
 
 export default class LocalStack extends EnvironmentStack {
-    private static readonly SETTINGS_FILES = [
-        'settings.json',
-        'settings.development.json',
-        'settings.local.json',
-    ];
+    private static readonly SETTINGS_FILE = 'settings.local.json';
     private readonly _settings: Settings;
 
     constructor(scope: Construct, id: string, props?: LocalStackProps) {

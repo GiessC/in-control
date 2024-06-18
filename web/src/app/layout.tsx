@@ -11,7 +11,6 @@ import Providers from './providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
-console.log(amplifyConfig);
 Amplify.configure(amplifyConfig, {
     ssr: true,
 });
