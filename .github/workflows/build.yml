@@ -117,7 +117,7 @@ jobs:
     - run: npm run test -- --error-on-deprecated --ci --config ${{ github.workspace }}/infra/jest.config.ts --maxWorkers=1
       working-directory: ${{ github.workspace }}/infra/
     - run: npm install -g aws-cdk@2.124.0
-    - run: cdk synth
+    - run: cdk synth -c environment=development
       working-directory: ${{ github.workspace }}/infra/
     - name: Upload test coverage
       uses: codecov/codecov-action@v4
