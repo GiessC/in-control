@@ -95,7 +95,8 @@ const SCHEMA = object<Settings>().shape({
             RemovalPolicy.RETAIN,
             RemovalPolicy.SNAPSHOT,
             RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE,
-        ]),
+        ])
+        .default(RemovalPolicy.RETAIN),
 });
 
 const validateSettings = (settings: object) => {

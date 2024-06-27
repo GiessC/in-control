@@ -12,4 +12,5 @@ coverage/
 
 settings.json
 settings.*.json
+!settings.pipeline.json
 dist/

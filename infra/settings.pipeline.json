@@ -1,0 +1,12 @@
+{
+    "AwsSettings": {
+        "Region": "us-east-1",
+        "Account": "111111111111"
+    },
+    "DomainSettings": {
+        "CertificateArn": "arn:aws:acm:us-east-1:111111111111:certificate/83a47741-9220-4e7b-8179-35c5f5a74cfe",
+        "HostedZoneId": "Z11111111111111111111",
+        "DomainName": "website.com"
+    },
+    "RemovalPolicy": "retain"
+}
