@@ -23,6 +23,5 @@ if (!environment || environment === 'development') {
     );
     new LocalStack(app, `Ctrl${environment}`);
 }
-// I will remove this comment
 
 app.synth();
