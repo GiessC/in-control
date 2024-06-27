@@ -1,13 +1,28 @@
 import { RemovalPolicy } from 'aws-cdk-lib';
 import path from 'path';
-import { object, string, type Schema } from 'yup';
+import { number, object, string } from 'yup';
 import { SettingsFailedToLoadError } from '../errors/settingsFailedToLoadError';
 
-export class Settings {
+const removeEmptyValues = <TReturnType>(object?: object): TReturnType => {
+    if (!object) return {} as TReturnType;
+    return Object.entries(object).reduce(
+        (acc: Record<string, string>, [key, value]) => {
+            if (typeof value === 'object') {
+                acc[key] = removeEmptyValues(value);
+            } else if (value !== '' && value != null) {
+                acc[key] = value;
+            }
+            return acc;
+        },
+        {},
+    ) as TReturnType;
+};
+
+export default class Settings {
     private static _instance?: Settings;
-    readonly AwsSettings?: AwsSettings;
-    readonly DomainSettings: DomainSettings;
-    readonly RemovalPolicy?: RemovalPolicy;
+    public readonly AwsSettings?: AwsSettings;
+    public readonly DomainSettings: DomainSettings;
+    public readonly RemovalPolicy?: RemovalPolicy;
 
     public constructor(
         AwsSettings: AwsSettings | undefined,
@@ -30,6 +45,7 @@ export class Settings {
         if (!this._instance) {
             throw new Error('Settings failed to load');
         }
+        validateSettings(this._instance);
         return this._instance;
     }
 
@@ -53,10 +69,11 @@ export interface DomainSettings {
     readonly DomainName: string;
 }
 
-const SCHEMA: Schema = object<Settings>().shape({
+const SCHEMA = object<Settings>().shape({
     AwsSettings: object<AwsSettings>()
         .shape({
-            Profile: string().defined().nonNullable().required(),
+            Account: number().defined().nonNullable().notRequired(),
+            Profile: string().defined().nonNullable().notRequired(),
             Region: string().defined().nonNullable().required(),
         })
         .optional()
@@ -78,7 +95,8 @@ const SCHEMA: Schema = object<Settings>().shape({
             RemovalPolicy.RETAIN,
             RemovalPolicy.SNAPSHOT,
             RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE,
-        ]),
+        ])
+        .default(RemovalPolicy.RETAIN),
 });
 
 const validateSettings = (settings: object) => {
@@ -109,9 +127,7 @@ const loadSettingsFromEnvVars = (): Settings => {
 const loadSettingsFromJson = (settingsFile: string): Settings => {
     const settingsFileLocation = path.join(process.cwd(), settingsFile);
     try {
-        const settings = require(settingsFileLocation);
-        validateSettings(settings);
-        return settings;
+        return require(settingsFileLocation);
     } catch (error: unknown) {
         throw new SettingsFailedToLoadError(settingsFileLocation, error);
     }

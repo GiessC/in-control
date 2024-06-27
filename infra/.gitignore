@@ -7,11 +7,10 @@ node_modules
 .cdk.staging
 cdk.out
 
-# CDK context
-cdk.context.json
-
 # Tests
 coverage/
 
-settings*.json
+settings.json
+settings.*.json
+!settings.pipeline.json
 dist/

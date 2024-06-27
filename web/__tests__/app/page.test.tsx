@@ -1,16 +1,20 @@
 import Home from '@/app/page';
 import '@testing-library/jest-dom';
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 describe('Page', () => {
     it('renders', async () => {
         // When
-        act(() => {
-            render(<Home />);
+        render(<Home />);
+        const homeHeader = await screen.findByRole('heading', {
+            name: 'Home',
         });
-        const sampleText = await screen.findByText('Get started by editing');
+        const loginLink = screen.getByRole('link', {
+            name: 'Login',
+        });
 
         // Then
-        expect(sampleText).toBeInTheDocument();
+        expect(homeHeader).toBeInTheDocument();
+        expect(loginLink).toBeInTheDocument();
     });
 });

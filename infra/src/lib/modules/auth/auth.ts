@@ -9,7 +9,7 @@ import {
 } from 'aws-cdk-lib/aws-cognito';
 import { Construct } from 'constructs';
 import DefaultModuleProps from '../../common/defaultModuleProps';
-import { type Settings } from '../../common/settings';
+import Settings from '../../common/settings';
 
 export class AuthModule extends Construct {
     private readonly _settings: Settings;

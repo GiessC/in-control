@@ -1,6 +1,6 @@
 import { StackProps } from 'aws-cdk-lib';
 import { type Construct } from 'constructs';
-import { Settings } from '../../../common/settings';
+import Settings from '../../../common/settings';
 import EnvironmentStack from '../environmentStack';
 
 export default class DevelopmentStack extends EnvironmentStack {
@@ -13,7 +13,7 @@ export default class DevelopmentStack extends EnvironmentStack {
             DevelopmentStack.SETTINGS_FILE,
         );
         const env = this.getEnv(this._settings);
-        this.createStacks(env);
+        this.createStacks(id, env);
     }
 
     protected get settings(): Settings {
