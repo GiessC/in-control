@@ -1,6 +1,6 @@
 import { RemovalPolicy } from 'aws-cdk-lib';
 import path from 'path';
-import { object, string } from 'yup';
+import { number, object, string } from 'yup';
 import { SettingsFailedToLoadError } from '../errors/settingsFailedToLoadError';
 
 const removeEmptyValues = <TReturnType>(object?: object): TReturnType => {
@@ -72,7 +72,8 @@ export interface DomainSettings {
 const SCHEMA = object<Settings>().shape({
     AwsSettings: object<AwsSettings>()
         .shape({
-            Profile: string().defined().nonNullable().required(),
+            Account: number().defined().nonNullable().notRequired(),
+            Profile: string().defined().nonNullable().notRequired(),
             Region: string().defined().nonNullable().required(),
         })
         .optional()
