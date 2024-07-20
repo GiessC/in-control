@@ -28,7 +28,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-nuget-
     - name: Restore dependencies
-      run: nuget restore
+      run: dotnet restore
       working-directory: ${{ github.workspace }}/api/
     - name: Build
       run: dotnet build --no-restore --configuration Release /p:ContinuousIntegrationBuild=true

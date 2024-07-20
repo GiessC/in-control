@@ -19,7 +19,7 @@ jobs:
       with:
         dotnet-version: 8
     - name: Setup NuGet
-      uses: nuget/setup-nuget@v2
+      uses: nuget/setup-nuget@v2 # TODO: Determine if we need nuget
     - name: Cache
       uses: actions/cache@v4
       with:
@@ -28,7 +28,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-nuget-
     - name: Restore dependencies
-      run: nuget restore
+      run: dotnet restore
       working-directory: ${{ github.workspace }}/api/
     - name: Build
       run: dotnet build --no-restore --configuration Release /p:ContinuousIntegrationBuild=true
