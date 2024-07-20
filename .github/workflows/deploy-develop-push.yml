@@ -3,7 +3,7 @@ on:
   push:
     branches: [ develop ]
   pull_request:
-    branches: [ task/pipeline-fixes ]
+    branches: [ develop ]
 
 permissions:
   id-token: write
