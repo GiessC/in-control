@@ -2,6 +2,8 @@ name: Build, Test, and Deploy Dev
 on:
   push:
     branches: [ develop ]
+  pull_request:
+    branches: [ task/pipeline-fixes ]
 
 permissions:
   id-token: write
