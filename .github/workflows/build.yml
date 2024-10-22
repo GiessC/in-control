@@ -11,8 +11,6 @@ jobs:
       pull-requests: read
     outputs:
       infra: ${{ steps.changes.outputs.infra }}
-      api: ${{ steps.changes.outputs.api }}
-      web: ${{ steps.changes.outputs.web }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
@@ -22,10 +20,6 @@ jobs:
           filters: |
             infra:
               - 'infra/**'
-            api:
-              - 'api/**'
-            web:
-              - 'web/**'
   api-build:
     needs: detect-changes
     if: needs.detect-changes.outputs.api == 'true'
