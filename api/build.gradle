@@ -1,0 +1,44 @@
+apply plugin: 'java'
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+  maven {url "https://repo.spring.io/milestone"}
+  maven {url "https://repo.spring.io/snapshot"}
+}
+
+dependencies {
+  implementation (
+          implementation('org.springframework.boot:spring-boot-starter-web:3.3.4') {
+            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+          },
+          'com.amazonaws.serverless:aws-serverless-java-container-springboot3:[2.0-SNAPSHOT,)',
+  )
+
+  testImplementation("com.amazonaws.serverless:aws-serverless-java-container-core:[2.0-SNAPSHOT,):tests")
+  testImplementation("org.apache.httpcomponents.client5:httpclient5:5.2.1")
+  testImplementation(platform("org.junit:junit-bom:5.10.2"))
+  testImplementation("org.junit.jupiter:junit-jupiter")
+
+	compileOnly 'org.projectlombok:lombok:1.18.34'
+	annotationProcessor 'org.projectlombok:lombok:1.18.34'
+
+	testCompileOnly 'org.projectlombok:lombok:1.18.34'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
+}
+
+task buildZip(type: Zip) {
+  from compileJava
+  from processResources
+  into('lib') {
+    from(configurations.compileClasspath) {
+      exclude 'tomcat-embed-*'
+    }
+  }
+}
+
+test {
+  useJUnitPlatform()
+}
+
+build.dependsOn buildZip
