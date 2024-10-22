@@ -1,9 +1,4 @@
 {
-  "[csharp]": {
-    "editor.maxTokenizationLineLength": 2500,
-    "editor.inlineSuggest.suppressSuggestions": false,
-    "editor.defaultFormatter": "csharpier.csharpier-vscode"
-  },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
@@ -11,13 +6,10 @@
     "source.organizeImports": "always"
   },
   "prettier.configPath": ".prettierrc",
-  "cSpell.words": [
-    "backable",
-    "carryforward",
-    "codecov",
-    "inctrl",
-    "signup",
-    "Xunit"
-  ],
-  "codeQL.githubDatabase.download": "never"
+  "codeQL.githubDatabase.download": "never",
+  "[java]": {
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.defaultFormatter": "redhat.java"
+  },
+  "java.format.enabled": true
 }
